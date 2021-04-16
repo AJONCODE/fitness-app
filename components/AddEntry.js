@@ -1,19 +1,31 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { getMetricMetaInfo, timeToString } from "../utils/helpers";
 
 import ActivitySlider from "./ActivitySlider";
 import ActivityStepper from "./ActivityStepper";
 import DateHeader from "./DateHeader";
 import React from "react";
-import { getMetricMetaInfo } from "../utils/helpers";
+
+function SubmitButton({ onPress }) {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text>SUBMIT</Text>
+    </TouchableOpacity>
+  );
+}
 
 export default function AddEntry() {
-  const [activityState, setActivityState] = React.useState({
+  const initialActivityState = {
     run: 0,
     bike: 0,
     swim: 0,
     sleep: 0,
     eat: 0,
-  });
+  };
+
+  const [activityState, setActivityState] = React.useState(
+    initialActivityState
+  );
 
   const increment = (metric) => {
     const { max, step } = getMetricMetaInfo(metric);
@@ -47,6 +59,24 @@ export default function AddEntry() {
     }));
   };
 
+  const submit = () => {
+    const key = timeToString();
+    const entry = activityState;
+
+    console.info("key: ", key);
+    console.info("entry: ", entry);
+
+    // Update Redux
+
+    setActivityState(() => initialActivityState);
+
+    // Navigate to home
+
+    // Save to DB
+
+    // Clear the local notification
+  };
+
   const metaInfo = getMetricMetaInfo();
 
   return (
@@ -76,6 +106,8 @@ export default function AddEntry() {
           </View>
         );
       })}
+
+      <SubmitButton onPress={submit} />
     </View>
   );
 }
