@@ -2,6 +2,7 @@ import { Text, View } from "react-native";
 
 import ActivitySlider from "./ActivitySlider";
 import ActivityStepper from "./ActivityStepper";
+import DateHeader from "./DateHeader";
 import React from "react";
 import { getMetricMetaInfo } from "../utils/helpers";
 
@@ -50,7 +51,7 @@ export default function AddEntry() {
 
   return (
     <View>
-      <Text>Activity</Text>
+      <DateHeader date={new Date().toLocaleDateString()} />
       {Object.keys(metaInfo).map((key) => {
         const { getIcon, type, ...rest } = metaInfo[key];
         const value = activityState[key];
