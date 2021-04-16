@@ -1,5 +1,8 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+
+import { Text, View } from "react-native";
+
+import AddEntry from "./components/AddEntry";
 
 export default function App() {
   return (
@@ -10,7 +13,7 @@ export default function App() {
         alignItems: "center",
       }}
     >
-      <Text>Universal React with Expo</Text>
+      <AddEntry />
     </View>
   );
 }
