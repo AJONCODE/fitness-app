@@ -4,7 +4,14 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
-import { paleBlue, white } from "./colors";
+import {
+  lightPurp,
+  paleBlue,
+  paleOrange,
+  paleRed,
+  pink,
+  white,
+} from "./colors";
 
 import React from "react";
 
@@ -18,7 +25,7 @@ export function getMetricMetaInfo(metric) {
       type: "steppers",
       getIcon() {
         return (
-          <View style={[styles.iconContainer, { backgroundColor: red }]}>
+          <View style={[styles.iconContainer, { backgroundColor: paleRed }]}>
             <MaterialIcons name="directions-run" color={white} size={35} />
           </View>
         );
@@ -32,7 +39,7 @@ export function getMetricMetaInfo(metric) {
       type: "steppers",
       getIcon() {
         return (
-          <View style={[styles.iconContainer, { backgroundColor: orange }]}>
+          <View style={[styles.iconContainer, { backgroundColor: paleOrange }]}>
             <MaterialCommunityIcons name="bike" color={white} size={32} />
           </View>
         );

@@ -1,5 +1,8 @@
+import { Text, View } from "react-native";
+
+import ActivitySlider from "./ActivitySlider";
+import ActivityStepper from "./ActivityStepper";
 import React from "react";
-import { View } from "react-native";
 import { getMetricMetaInfo } from "../utils/helpers";
 
 export default function AddEntry() {
@@ -43,5 +46,35 @@ export default function AddEntry() {
     }));
   };
 
-  return <View>{getMetricMetaInfo("swim").getIcon()}</View>;
+  const metaInfo = getMetricMetaInfo();
+
+  return (
+    <View>
+      <Text>Activity</Text>
+      {Object.keys(metaInfo).map((key) => {
+        const { getIcon, type, ...rest } = metaInfo[key];
+        const value = activityState[key];
+
+        return (
+          <View key={key}>
+            {getIcon()}
+            {type === "slider" ? (
+              <ActivitySlider
+                value={value}
+                onChange={(value) => slide(key, value)}
+                {...rest}
+              />
+            ) : (
+              <ActivityStepper
+                value={value}
+                onIncrement={(value) => increment(key)}
+                onDecrement={(value) => decrement(key)}
+                {...rest}
+              />
+            )}
+          </View>
+        );
+      })}
+    </View>
+  );
 }
