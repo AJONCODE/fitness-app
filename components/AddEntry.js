@@ -4,7 +4,9 @@ import { getMetricMetaInfo, timeToString } from "../utils/helpers";
 import ActivitySlider from "./ActivitySlider";
 import ActivityStepper from "./ActivityStepper";
 import DateHeader from "./DateHeader";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import TextButton from "./TextButton";
 
 function SubmitButton({ onPress }) {
   return (
@@ -14,7 +16,7 @@ function SubmitButton({ onPress }) {
   );
 }
 
-export default function AddEntry() {
+export default function AddEntry({ alreadyLogged }) {
   const initialActivityState = {
     run: 0,
     bike: 0,
@@ -80,7 +82,26 @@ export default function AddEntry() {
 
   const metaInfo = getMetricMetaInfo();
 
-  console.info("activityState: ", activityState);
+  const reset = () => {
+    const key = timeToString();
+
+    // Update Redux
+
+    // Route to Home
+
+    // Update "DB"
+  };
+
+  if (alreadyLogged) {
+    return (
+      <View>
+        <Ionicons name="ios-happy-outline" size={100} color={"black"} />
+        <Text>You already logged your information for today!</Text>
+        {/* RESET button */}
+        <TextButton onPress={reset}>RESET</TextButton>
+      </View>
+    );
+  }
 
   return (
     <View>
