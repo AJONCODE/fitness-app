@@ -41,20 +41,21 @@ export default function AddEntry() {
   };
 
   const decrement = (metric) => {
-    const { step } = getMetricMetaInfo(metric);
+    const { step, max } = getMetricMetaInfo(metric);
 
     setActivityState((activityState) => {
       const count = activityState[metric] - step;
 
       return {
         ...activityState,
-        [metric]: count < max ? 0 : count,
+        [metric]: count < 0 ? 0 : count,
       };
     });
   };
 
   const slide = (metric, value) => {
     setActivityState(() => ({
+      ...activityState,
       [metric]: value,
     }));
   };
@@ -78,6 +79,8 @@ export default function AddEntry() {
   };
 
   const metaInfo = getMetricMetaInfo();
+
+  console.info("activityState: ", activityState);
 
   return (
     <View>
