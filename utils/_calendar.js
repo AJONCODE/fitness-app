@@ -2,7 +2,7 @@ import { getMetricMetaInfo, timeToString } from "./helpers";
 
 import { AsyncStorage } from "react-native";
 
-export const CALENDAR_STORAGE_KEY = "UdaciFitness:calendar";
+export const CALENDAR_STORAGE_KEY = "FitnessApp:calendar";
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max) + 0;
 }

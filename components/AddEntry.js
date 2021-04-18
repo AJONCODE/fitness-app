@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { getMetricMetaInfo, timeToString } from "../utils/helpers";
+import { removeEntry, submitEntry } from "../utils/api";
 
 import ActivitySlider from "./ActivitySlider";
 import ActivityStepper from "./ActivityStepper";
@@ -75,7 +76,8 @@ export default function AddEntry({ alreadyLogged }) {
 
     // Navigate to home
 
-    // Save to DB
+    // Save to "DB"
+    submitEntry({ key, entry });
 
     // Clear the local notification
   };
@@ -90,6 +92,7 @@ export default function AddEntry({ alreadyLogged }) {
     // Route to Home
 
     // Update "DB"
+    removeEntry(key);
   };
 
   if (alreadyLogged) {
