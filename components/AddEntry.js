@@ -1,5 +1,9 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { getMetricMetaInfo, timeToString } from "../utils/helpers";
+import {
+  getDailyReminderValue,
+  getMetricMetaInfo,
+  timeToString,
+} from "../utils/helpers";
 import { removeEntry, submitEntry } from "../utils/api";
 
 import ActivitySlider from "./ActivitySlider";
@@ -8,6 +12,8 @@ import DateHeader from "./DateHeader";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import TextButton from "./TextButton";
+import { addEntry } from "../actions/index";
+import { connect } from "react-redux";
 
 function SubmitButton({ onPress }) {
   return (
@@ -17,7 +23,7 @@ function SubmitButton({ onPress }) {
   );
 }
 
-export default function AddEntry({ alreadyLogged }) {
+function AddEntry({ alreadyLogged, dispatch }) {
   const initialActivityState = {
     run: 0,
     bike: 0,
@@ -71,6 +77,11 @@ export default function AddEntry({ alreadyLogged }) {
     console.info("entry: ", entry);
 
     // Update Redux
+    dispatch(
+      addEntry({
+        [key]: entry,
+      })
+    );
 
     setActivityState(() => initialActivityState);
 
@@ -88,6 +99,11 @@ export default function AddEntry({ alreadyLogged }) {
     const key = timeToString();
 
     // Update Redux
+    dispatch(
+      addEntry({
+        [key]: getDailyReminderValue(),
+      })
+    );
 
     // Route to Home
 
@@ -138,3 +154,13 @@ export default function AddEntry({ alreadyLogged }) {
     </View>
   );
 }
+
+function mapStateToProps(state) {
+  const key = timeToString();
+
+  return {
+    alreadyLogged: state[key] && typeof state[key].today === "undefined",
+  };
+}
+
+export default connect(mapStateToProps)(AddEntry);
