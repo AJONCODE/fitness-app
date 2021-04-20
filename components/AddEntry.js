@@ -1,9 +1,16 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {
   getDailyReminderValue,
   getMetricMetaInfo,
   timeToString,
 } from "../utils/helpers";
+import { purple, white } from "../utils/colors";
 import { removeEntry, submitEntry } from "../utils/api";
 
 import ActivitySlider from "./ActivitySlider";
@@ -17,8 +24,13 @@ import { connect } from "react-redux";
 
 function SubmitButton({ onPress }) {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Text>SUBMIT</Text>
+    <TouchableOpacity
+      style={
+        Platform.OS === "ios" ? styles.iosSubmitBtn : styles.androidSubmitBtn
+      }
+      onPress={onPress}
+    >
+      <Text style={styles.submitBtnText}>SUBMIT</Text>
     </TouchableOpacity>
   );
 }
@@ -113,24 +125,31 @@ function AddEntry({ alreadyLogged, dispatch }) {
 
   if (alreadyLogged) {
     return (
-      <View>
-        <Ionicons name="ios-happy-outline" size={100} color={"black"} />
+      <View style={styles.center}>
+        <Ionicons
+          name={
+            Platform.OS === "ios" ? "ios-happy-outline" : "md-happy-outline"
+          }
+          size={100}
+          color={"black"}
+        />
         <Text>You already logged your information for today!</Text>
-        {/* RESET button */}
-        <TextButton onPress={reset}>RESET</TextButton>
+        <TextButton style={{ padding: 10 }} onPress={reset}>
+          RESET
+        </TextButton>
       </View>
     );
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <DateHeader date={new Date().toLocaleDateString()} />
       {Object.keys(metaInfo).map((key) => {
         const { getIcon, type, ...rest } = metaInfo[key];
         const value = activityState[key];
 
         return (
-          <View key={key}>
+          <View key={key} style={styles.row}>
             {getIcon()}
             {type === "slider" ? (
               <ActivitySlider
@@ -154,6 +173,50 @@ function AddEntry({ alreadyLogged, dispatch }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: white,
+  },
+  row: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+  },
+  iosSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  androidSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 2,
+    height: 45,
+    alignSelf: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  submitBtnText: {
+    color: white,
+    fontSize: 22,
+    textAlign: "center",
+  },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 30,
+    marginRight: 30,
+  },
+});
 
 function mapStateToProps(state) {
   const key = timeToString();
