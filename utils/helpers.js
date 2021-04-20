@@ -15,6 +15,18 @@ import {
 
 import React from "react";
 
+const styles = StyleSheet.create({
+  iconContainer: {
+    padding: 5,
+    borderRadius: 8,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 20,
+  },
+});
+
 export function getMetricMetaInfo(metric) {
   const info = {
     run: {
@@ -139,7 +151,3 @@ export function getDailyReminderValue() {
     today: "✨Don't forget to log your data today!",
   };
 }
-
-const styles = StyleSheet.create({
-  iconContainer: {},
-});

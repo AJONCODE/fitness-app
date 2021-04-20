@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { Text, View } from "react-native";
 
-import ActivitySlider from "./components/ActivitySlider";
-import ActivityStepper from "./components/ActivityStepper";
 import AddEntry from "./components/AddEntry";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
@@ -13,11 +11,7 @@ export default function App() {
   return (
     <Provider store={createStore(reducer)}>
       <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        style={{ flex: 1 }}
       >
         <AddEntry />
       </View>
