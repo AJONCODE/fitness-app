@@ -1,12 +1,24 @@
-import { Text, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { addEntry, receiveEntries } from "../actions/index";
-import { getDailyReminderValue, timeToString } from "../utils/helpers";
+import {
+  formatted,
+  getDailyReminderValue,
+  timeToString,
+} from "../utils/helpers";
 
 import CalenderView from "./CalenderView";
+import DateHeader from "./DateHeader";
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCalenderResults } from "../utils/api";
 import { formatDate } from "../utils/_calendar";
+import { white } from "../utils/colors";
 
 function History({ dispatch, entries }) {
   const [selectedDate, setSelectedDate] = React.useState(
@@ -28,25 +40,32 @@ function History({ dispatch, entries }) {
       });
   }, []);
 
-  const renderItem = () => {
-    // const renderItem = (formattedDate, key) => {
-    // console.log("renderItem: formattedDate: ", formattedDate);
-    // console.log("renderItem: key: ", key);
+  const renderItem = (formattedDate) => {
+    // const metrics = entries;
+    const entry = entries[`${formattedDate}`];
+    const today = entry.today;
 
-    // const { today } = getDailyReminderValue();
-    const metrics = entries;
-
-    const today = entries[`${selectedDate}`];
-
-    // console.log("renderItem: today: ", today);
-    // console.log("renderItem: metrics: ", metrics);
     return (
-      <View>
-        {today ? (
-          <Text>{JSON.stringify(today)}</Text>
+      <View style={styles.item}>
+        {!!today ? (
+          <View>
+            <DateHeader date={formattedDate} />
+            <Text style={styles.noDataText}>{today}</Text>
+          </View>
         ) : (
-          <Text>{JSON.stringify(metrics)}</Text>
+          <TouchableOpacity onPress={() => console.log("Pressed!")}>
+            <Text>{JSON.stringify(entry)}</Text>
+          </TouchableOpacity>
         )}
+      </View>
+    );
+  };
+
+  const renderEmptyItem = (formattedDate) => {
+    return (
+      <View style={styles.item}>
+        <DateHeader date={formattedDate} />
+        <Text style={styles.noDataText}>No Data logged on this day.</Text>
       </View>
     );
   };
@@ -62,10 +81,36 @@ function History({ dispatch, entries }) {
 
       <CalenderView setSelectedDate={setSelectedDate} />
 
-      {selectedDate && renderItem()}
+      {entries[`${selectedDate}`]
+        ? renderItem(selectedDate)
+        : renderEmptyItem(selectedDate)}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: white,
+    borderRadius: Platform.OS === "ios" ? 16 : 2,
+    padding: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 17,
+    justifyContent: "center",
+    shadowRadius: 3,
+    shadowOpacity: 0.8,
+    shadowColor: "rgba(0, 0, 0, 0.24)",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+  },
+  noDataText: {
+    fontSize: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+});
 
 function mapStateToProps(entries) {
   return {
