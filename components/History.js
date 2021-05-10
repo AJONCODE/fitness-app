@@ -14,6 +14,7 @@ import {
 
 import CalenderView from "./CalenderView";
 import DateHeader from "./DateHeader";
+import MetricCard from "./MetricCard";
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCalenderResults } from "../utils/api";
@@ -42,8 +43,8 @@ function History({ dispatch, entries }) {
 
   const renderItem = (formattedDate) => {
     // const metrics = entries;
-    const entry = entries[`${formattedDate}`];
-    const today = entry.today;
+    const metrics = entries[`${formattedDate}`];
+    const today = metrics.today;
 
     return (
       <View style={styles.item}>
@@ -54,7 +55,7 @@ function History({ dispatch, entries }) {
           </View>
         ) : (
           <TouchableOpacity onPress={() => console.log("Pressed!")}>
-            <Text>{JSON.stringify(entry)}</Text>
+            <MetricCard date={formattedDate} metrics={metrics} />
           </TouchableOpacity>
         )}
       </View>
