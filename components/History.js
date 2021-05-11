@@ -12,6 +12,7 @@ import {
   timeToString,
 } from "../utils/helpers";
 
+import AppLoading from "expo-app-loading";
 import CalenderView from "./CalenderView";
 import DateHeader from "./DateHeader";
 import MetricCard from "./MetricCard";
@@ -22,6 +23,7 @@ import { formatDate } from "../utils/_calendar";
 import { white } from "../utils/colors";
 
 function History({ dispatch, entries }) {
+  const [ready, setReady] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(
     formatDate(new Date())
   );
@@ -38,7 +40,8 @@ function History({ dispatch, entries }) {
             })
           );
         }
-      });
+      })
+      .then(() => setReady(true));
   }, []);
 
   const renderItem = (formattedDate) => {
@@ -74,6 +77,10 @@ function History({ dispatch, entries }) {
   // console.info("entries: ", entries);
   // console.info("selectedDate: ", selectedDate);
   console.info("entries value on selectedDate", entries[`${selectedDate}`]);
+
+  if (!ready) {
+    return <AppLoading />;
+  }
 
   return (
     <View>
