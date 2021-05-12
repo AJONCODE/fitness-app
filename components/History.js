@@ -84,7 +84,6 @@ function History({ dispatch, entries }) {
 
   return (
     <View>
-      <Text>History</Text>
       {/* <Text>{JSON.stringify(entries, null, 2)}</Text> */}
 
       <CalenderView setSelectedDate={setSelectedDate} />
