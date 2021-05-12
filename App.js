@@ -1,10 +1,11 @@
 import * as React from "react";
 
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Platform, View } from "react-native";
+import { Platform, StatusBar, View } from "react-native";
 import { lightPurp, white } from "./utils/colors";
 
 import AddEntry from "./components/AddEntry";
+import Constants from "expo-constants";
 import History from "./components/History";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
@@ -12,13 +13,21 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStore } from "redux";
 import reducer from "./reducers/index";
 
+function AppStatusBar({ backgroundColor, ...props }) {
+  return (
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </View>
+  );
+}
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <Provider store={createStore(reducer)}>
       <View style={{ flex: 1 }}>
-        <View style={{ height: 20 }} />
+        <AppStatusBar backgroundColor={lightPurp} barStyle="light-content" />
         <NavigationContainer>
           <Tab.Navigator
             screenOptions={({ route }) => ({
