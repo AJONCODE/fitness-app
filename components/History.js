@@ -22,7 +22,7 @@ import { fetchCalenderResults } from "../utils/api";
 import { formatDate } from "../utils/_calendar";
 import { white } from "../utils/colors";
 
-function History({ dispatch, entries }) {
+function History({ navigation, dispatch, entries }) {
   const [ready, setReady] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(
     formatDate(new Date())
@@ -57,7 +57,11 @@ function History({ dispatch, entries }) {
             <Text style={styles.noDataText}>{today}</Text>
           </View>
         ) : (
-          <TouchableOpacity onPress={() => console.log("Pressed!")}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("EntryDetail", { entryId: formattedDate })
+            }
+          >
             <MetricCard date={formattedDate} metrics={metrics} />
           </TouchableOpacity>
         )}
@@ -76,7 +80,7 @@ function History({ dispatch, entries }) {
 
   // console.info("entries: ", entries);
   // console.info("selectedDate: ", selectedDate);
-  console.info("entries value on selectedDate", entries[`${selectedDate}`]);
+  // console.info("entries value on selectedDate", entries[`${selectedDate}`]);
 
   if (!ready) {
     return <AppLoading />;
