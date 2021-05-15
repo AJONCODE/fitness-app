@@ -90,6 +90,7 @@ function MainStackNavigator() {
         name="History"
         component={MainTabNavigator}
         options={({ route }) => ({
+          headerShown: false,
           headerTitle: getHeaderTitle(route),
           headerStyle: {
             backgroundColor: lightPurp,
@@ -125,7 +126,6 @@ export default function App() {
       <View style={{ flex: 1 }}>
         <AppStatusBar backgroundColor={lightPurp} barStyle="light-content" />
         <NavigationContainer>{<MainStackNavigator />}</NavigationContainer>
-        {/* <Tabs /> */}
       </View>
     </Provider>
   );
