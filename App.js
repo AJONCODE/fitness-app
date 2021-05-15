@@ -48,6 +48,7 @@ function MainTabNavigator() {
         },
       })}
       tabBarOptions={{
+        labelPosition: "below-icon",
         activeTintColor: Platform.OS === "ios" ? lightPurp : white,
         inactiveTintColor: "grey",
         style: {
@@ -100,7 +101,11 @@ function MainStackNavigator() {
         })}
         navigationOptions={{ headerTintColor: lightPurp }}
       />
-      <Stack.Screen name="EntryDetail" component={EntryDetail} />
+      <Stack.Screen
+        name="EntryDetail"
+        component={EntryDetail}
+        options={{ headerBackTitleVisible: false }}
+      />
     </Stack.Navigator>
   );
 }
