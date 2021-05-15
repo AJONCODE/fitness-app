@@ -104,7 +104,16 @@ function MainStackNavigator() {
       <Stack.Screen
         name="EntryDetail"
         component={EntryDetail}
-        options={{ headerBackTitleVisible: false }}
+        options={{
+          headerBackTitleVisible: false,
+          headerStyle: {
+            backgroundColor: lightPurp,
+          },
+          headerTintColor: white,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
       />
     </Stack.Navigator>
   );
