@@ -14,7 +14,7 @@ export default function Compass() {
   const [compassState, setCompassState] = React.useState({
     coordinate: null,
     // status: null,
-    status: "undetermined",
+    status: "denied",
     direction: "",
   });
 
@@ -26,8 +26,12 @@ export default function Compass() {
 
   if (compassState.status === "denied") {
     return (
-      <View>
-        <Text>Denied</Text>
+      <View style={styles.center}>
+        <Foundation name="alert" size={50} color={paleRed} />
+        <Text>
+          Location is denied. Please fix this by visiting settings and enabling
+          location services for this app.
+        </Text>
       </View>
     );
   }
