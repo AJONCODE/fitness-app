@@ -14,7 +14,7 @@ export default function Compass() {
   const [compassState, setCompassState] = React.useState({
     coordinate: null,
     // status: null,
-    status: "denied",
+    status: "granted",
     direction: "",
   });
 
@@ -49,9 +49,25 @@ export default function Compass() {
   }
 
   return (
-    <View>
-      <Text>Compass</Text>
-      <Text>{JSON.stringify(compassState, null, 2)}</Text>
+    <View style={styles.container}>
+      <View style={styles.directionContainer}>
+        <Text style={styles.header}>You're heading</Text>
+        <Text style={styles.direction}>North</Text>
+      </View>
+      <View style={styles.metricContainer}>
+        <View style={styles.metric}>
+          <Text style={[styles.statHeader, { color: white }]}>Altitude</Text>
+          <Text style={[styles.statSubHeader, { color: white }]}>
+            {200} Feet
+          </Text>
+        </View>
+        <View style={styles.metric}>
+          <Text style={[styles.statHeader, { color: white }]}>Speed </Text>
+          <Text style={[styles.statSubHeader, { color: white }]}>
+            {300} MPH
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -78,5 +94,46 @@ const styles = StyleSheet.create({
   buttonText: {
     color: white,
     fontSize: 15,
+  },
+  directionContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  header: {
+    fontSize: 30,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  direction: {
+    color: lightPurp,
+    fontSize: 70,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  metricContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: lightPurp,
+  },
+  metric: {
+    flex: 1,
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  statHeader: {
+    fontSize: 25,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  statSubHeader: {
+    fontSize: 15,
+    fontWeight: "600",
+    textAlign: "center",
+    marginTop: 5,
   },
 });
