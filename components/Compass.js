@@ -21,23 +21,35 @@ export default function Compass() {
     direction: "",
   });
 
-  const askPermission = () => {};
+  const askPermission = async () => {
+    try {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+      if (status === "granted") {
+        return setLocation();
+      }
+
+      setCompassState({
+        ...compassState,
+        status,
+      });
+    } catch (error) {
+      console.warn("Error asking location permission: ", error);
+    }
+  };
 
   const setLocation = () => {
     Location.watchPositionAsync(
       {
-        enableHighAccuracy: true,
+        accuracy: Location.Accuracy.BestForNavigation,
         timeInterval: 1,
         distanceInterval: 1,
       },
-      ({ coordinate }) => {
-        console.info("Location.watchPositionAsync -> coordinate: ", coordinate);
-        const newDirection = calculateDirection(coordinate.heading);
-
-        console.info("newDirection: ", newDirection);
+      (location) => {
+        const newDirection = calculateDirection(location.coords.heading);
 
         setCompassState({
-          coordinate,
+          coordinate: location.coords,
           status: "granted",
           direction: newDirection,
         });
@@ -45,26 +57,31 @@ export default function Compass() {
     );
   };
 
-  React.useEffect(() => {
-    Permissions.askAsync(Permissions.Location)
-      .then((status) => {
-        console.info("status: ", status);
-        if (status === "granted") {
-          return setLocation();
-        }
+  const getPermissionAsync = async () => {
+    try {
+      const { status } = await Permissions.askAsync(Permissions.LOCATION);
 
-        setCompassState({
-          ...compassState,
-          status,
-        });
-      })
-      .catch((error) => {
-        console.warn("Error getting location permission: ", error);
-        setCompassState({
-          ...compassState,
-          status: "undetermined",
-        });
+      if (status === "granted") {
+        return setLocation();
+      }
+
+      setCompassState({
+        ...compassState,
+        status,
       });
+    } catch (error) {
+      console.warn("Error getting location permission: ", error);
+      setCompassState({
+        ...compassState,
+        status: "undetermined",
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    (async () => {
+      await getPermissionAsync();
+    })();
   }, []);
 
   if (!compassState.status) {
@@ -99,19 +116,19 @@ export default function Compass() {
     <View style={styles.container}>
       <View style={styles.directionContainer}>
         <Text style={styles.header}>You're heading</Text>
-        <Text style={styles.direction}>North</Text>
+        <Text style={styles.direction}>{compassState.direction}</Text>
       </View>
       <View style={styles.metricContainer}>
         <View style={styles.metric}>
           <Text style={[styles.statHeader, { color: white }]}>Altitude</Text>
           <Text style={[styles.statSubHeader, { color: white }]}>
-            {200} Feet
+            {Math.round(compassState.coordinate.altitude * 3.2808)} Feet
           </Text>
         </View>
         <View style={styles.metric}>
           <Text style={[styles.statHeader, { color: white }]}>Speed </Text>
           <Text style={[styles.statSubHeader, { color: white }]}>
-            {300} MPH
+            {(compassState.coordinate.speed * 2.2369).toFixed(1)} MPH
           </Text>
         </View>
       </View>
