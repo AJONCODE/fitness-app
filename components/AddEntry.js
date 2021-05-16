@@ -1,3 +1,5 @@
+import * as RootNavigation from "../navigation/RootNavigation";
+
 import {
   Platform,
   StyleSheet,
@@ -35,7 +37,7 @@ function SubmitButton({ onPress }) {
   );
 }
 
-function AddEntry({ alreadyLogged, dispatch }) {
+function AddEntry({ navigation, alreadyLogged, dispatch }) {
   const initialActivityState = {
     run: 0,
     bike: 0,
@@ -98,6 +100,7 @@ function AddEntry({ alreadyLogged, dispatch }) {
     setActivityState(() => initialActivityState);
 
     // Navigate to home
+    toHistoryNavigation();
 
     // Save to "DB"
     submitEntry({ key, entry });
@@ -118,9 +121,14 @@ function AddEntry({ alreadyLogged, dispatch }) {
     );
 
     // Route to Home
+    toHistoryNavigation();
 
     // Update "DB"
     removeEntry(key);
+  };
+
+  const toHistoryNavigation = (routeName = "History") => {
+    RootNavigation.navigate(routeName);
   };
 
   if (alreadyLogged) {

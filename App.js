@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Platform, StatusBar, View } from "react-native";
+import { isReadyRef, navigationRef } from "./navigation/RootNavigation";
 import { lightPurp, white } from "./utils/colors";
 
 import AddEntry from "./components/AddEntry";
@@ -121,11 +122,24 @@ function MainStackNavigator() {
 }
 
 export default function App() {
+  React.useEffect(() => {
+    return () => {
+      isReadyRef.current = false;
+    };
+  }, []);
+
   return (
     <Provider store={createStore(reducer)}>
       <View style={{ flex: 1 }}>
         <AppStatusBar backgroundColor={lightPurp} barStyle="light-content" />
-        <NavigationContainer>{<MainStackNavigator />}</NavigationContainer>
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() => {
+            isReadyRef.current = true;
+          }}
+        >
+          {<MainStackNavigator />}
+        </NavigationContainer>
       </View>
     </Provider>
   );
