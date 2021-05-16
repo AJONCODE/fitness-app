@@ -1,3 +1,6 @@
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
+
 import {
   ActivityIndicator,
   StyleSheet,
@@ -9,16 +12,60 @@ import { lightPurp, paleRed, white } from "../utils/colors";
 
 import { Foundation } from "@expo/vector-icons";
 import React from "react";
+import { calculateDirection } from "../utils/helpers";
 
 export default function Compass() {
   const [compassState, setCompassState] = React.useState({
     coordinate: null,
-    // status: null,
-    status: "granted",
+    status: null,
     direction: "",
   });
 
   const askPermission = () => {};
+
+  const setLocation = () => {
+    Location.watchPositionAsync(
+      {
+        enableHighAccuracy: true,
+        timeInterval: 1,
+        distanceInterval: 1,
+      },
+      ({ coordinate }) => {
+        console.info("Location.watchPositionAsync -> coordinate: ", coordinate);
+        const newDirection = calculateDirection(coordinate.heading);
+
+        console.info("newDirection: ", newDirection);
+
+        setCompassState({
+          coordinate,
+          status: "granted",
+          direction: newDirection,
+        });
+      }
+    );
+  };
+
+  React.useEffect(() => {
+    Permissions.askAsync(Permissions.Location)
+      .then((status) => {
+        console.info("status: ", status);
+        if (status === "granted") {
+          return setLocation();
+        }
+
+        setCompassState({
+          ...compassState,
+          status,
+        });
+      })
+      .catch((error) => {
+        console.warn("Error getting location permission: ", error);
+        setCompassState({
+          ...compassState,
+          status: "undetermined",
+        });
+      });
+  }, []);
 
   if (!compassState.status) {
     return <ActivityIndicator style={{ marginTop: 30 }} />;
