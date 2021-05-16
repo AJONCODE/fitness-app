@@ -37,7 +37,7 @@ function SubmitButton({ onPress }) {
   );
 }
 
-function AddEntry({ navigation, alreadyLogged, dispatch }) {
+function AddEntry({ alreadyLogged, dispatch }) {
   const initialActivityState = {
     run: 0,
     bike: 0,
