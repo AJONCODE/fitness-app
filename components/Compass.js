@@ -3,6 +3,7 @@ import * as Permissions from "expo-permissions";
 
 import {
   ActivityIndicator,
+  Animated,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,6 +16,8 @@ import React from "react";
 import { calculateDirection } from "../utils/helpers";
 
 export default function Compass() {
+  const bounceAnimation = React.useRef(new Animated.Value(1)).current;
+
   const [compassState, setCompassState] = React.useState({
     coordinate: null,
     status: null,
@@ -41,12 +44,27 @@ export default function Compass() {
   const setLocation = () => {
     Location.watchPositionAsync(
       {
-        accuracy: Location.Accuracy.BestForNavigation,
+        accuracy: Location.Accuracy.Highest,
         timeInterval: 1,
         distanceInterval: 1,
       },
       (location) => {
         const newDirection = calculateDirection(location.coords.heading);
+
+        if (newDirection !== compassState.direction) {
+          Animated.sequence([
+            Animated.timing(bounceAnimation, {
+              duration: 200,
+              toValue: 1.04,
+              useNativeDriver: true,
+            }),
+            Animated.spring(bounceAnimation, {
+              toValue: 1,
+              friction: 4,
+              useNativeDriver: true,
+            }),
+          ]).start();
+        }
 
         setCompassState({
           coordinate: location.coords,
@@ -85,7 +103,11 @@ export default function Compass() {
   }, []);
 
   if (!compassState.status) {
-    return <ActivityIndicator style={{ marginTop: 30 }} />;
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator style={{ marginTop: 30 }} />
+      </View>
+    );
   }
 
   if (compassState.status === "denied") {
@@ -116,7 +138,14 @@ export default function Compass() {
     <View style={styles.container}>
       <View style={styles.directionContainer}>
         <Text style={styles.header}>You're heading</Text>
-        <Text style={styles.direction}>{compassState.direction}</Text>
+        <Animated.Text
+          style={[
+            styles.direction,
+            { transform: [{ scale: bounceAnimation }] },
+          ]}
+        >
+          {compassState.direction}
+        </Animated.Text>
       </View>
       <View style={styles.metricContainer}>
         <View style={styles.metric}>
