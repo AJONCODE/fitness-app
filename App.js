@@ -16,6 +16,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createStore } from "redux";
 import reducer from "./reducers/index";
+import { setLocalNotification } from "./utils/helpers";
 
 function AppStatusBar({ backgroundColor, ...props }) {
   return (
@@ -130,6 +131,7 @@ export default function App() {
   React.useEffect(() => {
     return () => {
       isReadyRef.current = false;
+      setLocalNotification();
     };
   }, []);
 

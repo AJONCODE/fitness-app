@@ -8,8 +8,10 @@ import {
   View,
 } from "react-native";
 import {
+  clearLocatNotification,
   getDailyReminderValue,
   getMetricMetaInfo,
+  setLocalNotification,
   timeToString,
 } from "../utils/helpers";
 import { purple, white } from "../utils/colors";
@@ -106,6 +108,7 @@ function AddEntry({ alreadyLogged, dispatch }) {
     submitEntry({ key, entry });
 
     // Clear the local notification
+    clearLocatNotification().then(setLocalNotification);
   };
 
   const metaInfo = getMetricMetaInfo();
