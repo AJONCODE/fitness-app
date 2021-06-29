@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Platform, StatusBar, View } from "react-native";
 import { isReadyRef, navigationRef } from "./navigation/RootNavigation";
 import { lightPurp, white } from "./utils/colors";
@@ -10,6 +10,7 @@ import Compass from "./components/Compass";
 import Constants from "expo-constants";
 import EntryDetail from "./components/EntryDetail";
 import History from "./components/History";
+import AddPic from "./components/AddPic";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -40,6 +41,8 @@ function MainTabNavigator() {
             iconName = focused ? "ios-bookmarks" : "ios-bookmarks-outline";
           } else if (route.name === "Compass") {
             iconName = focused ? "compass-sharp" : "compass-outline";
+          } else if (route.name === "AddPic") {
+            iconName = focused ? "images" : "images-outline";
           } else if (route.name === "AddEntry") {
             iconName = focused ? "plus-square" : "plus-square-o";
             return <FontAwesome name={iconName} size={size} color={color} />;
@@ -73,6 +76,7 @@ function MainTabNavigator() {
       <Tab.Screen name="History" component={History} />
       <Tab.Screen name="AddEntry" component={AddEntry} />
       <Tab.Screen name="Compass" component={Compass} />
+      <Tab.Screen name="AddPic" component={AddPic} />
     </Tab.Navigator>
   );
 }
@@ -87,6 +91,8 @@ function getHeaderTitle(route) {
       return "Add Entry";
     case "Compass":
       return "Compass";
+    case "AddPic":
+      return "Add Pic";
   }
 }
 
