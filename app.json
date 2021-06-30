@@ -9,17 +9,17 @@
     "slug": "fitness",
     "version": "1.0",
     // app icon
-    "icon": "./assets/icon.png",
-    "notification": {
-      // notification icon
-      "icon": "./assets/icon.png",
-    },
-    // "splash": {
-    //   // splash screen image
-    //   "image": "./assets/splash.png",
-    //   "resizeMode": "contain",
-    //   "backgroundColor": "#ffffff"
+    // "icon": "./assets/icon.png",
+    // "notification": {
+    //   // notification icon
+    //   "icon": "./assets/icon.png",
     // },
+    "splash": {
+      // splash screen image
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
       // an identifier for app store for our app
       "bundleIdentifier": "org.fitness.exp",
