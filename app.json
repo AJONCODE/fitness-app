@@ -1,0 +1,33 @@
+{
+  "expo": {
+    // only portrait mode will be active
+    "orientation": "portrait",
+    // name of the app
+    "name": "Fitness",
+    "description": "Traithlon tracker",
+    // for expo (slug is our custom URL)
+    "slug": "fitness",
+    "version": "1.0",
+    // app icon
+    "icon": "./assets/icon.png",
+    "notification": {
+      // notification icon
+      "icon": "./assets/icon.png",
+    },
+    "splash": {
+      // splash screen image
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+
+    "ios": {
+      // an identifier for app store for our app
+      "bundleIdentifier": "org.fitness.exp",
+    },
+    "android": {
+      // an identifier for playstore for our app
+      "package": "org.fitness.exp",
+    }
+  }
+}
